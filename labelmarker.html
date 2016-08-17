@@ -21,38 +21,35 @@
         var map;
         var tiled;
         $(window).load(function() {
-            var bounds = new OpenLayers.Bounds(
-                    87.57582859314434, 19.969920291221204,
-                    126.56713756740385, 45.693810203800794
-            );
-            var options = {
-                controls: [],
-                maxExtent: bounds,
-                maxResolution: 0.1523098006807012,
+            var vec_c = new OpenLayers.Layer.TiandituLayer("vec_c", "http://t0.tianditu.com/DataServer",{
+                mapType:"vec_c",
+                topLevel: 0,
+                bottomLevel: 18,
+                isBaseLayer:true,
+                isOnline:true,
+                mirrorUrls:[
+                    "http://t1.tianditu.com/DataServer",
+                    "http://t2.tianditu.com/DataServer",
+                    "http://t3.tianditu.com/DataServer",
+                    "http://t4.tianditu.com/DataServer",
+                    "http://t5.tianditu.com/DataServer",
+                    "http://t6.tianditu.com/DataServer",
+                    "http://t7.tianditu.com/DataServer"
+                ]
+            });
+
+            map = new OpenLayers.Map({
+                div: "map",
                 projection: "EPSG:4326",
-                units: 'degrees'
-            };
-            map = new OpenLayers.Map('map', options);
+                layers: [vec_c],
+                center: [103.847, 36.0473],
+                zoom: 4
+            });
             map.addControl(new OpenLayers.Control.Zoom());
             map.addControl(new OpenLayers.Control.Navigation());
-            map.addControl( new OpenLayers.Control.MousePosition());
-            var tiled = new OpenLayers.Layer.WMS(
-                    "province", "http://localhost:8088/geoserver/lzugis/wms",
-                    {
-                        "LAYERS": 'province',
-                        "STYLES": '',
-                        format: 'image/png'
-                    },
-                    {
-                        buffer: 0,
-                        displayOutsideMaxExtent: true,
-                        isBaseLayer: true,
-                        yx : {'EPSG:4326' : true}
-                    }
-            );
+
             var markerLyr = new OpenLayers.Layer.LabelMarkers("marker");
-            map.addLayers([tiled,markerLyr]);
-            map.zoomToExtent(bounds);
+            map.addLayer(markerLyr);
 
             var data = getRandomXY();
             var ul = $("#items");
@@ -63,7 +60,7 @@
                  * 地图内容
                  */
                 var pt =  new OpenLayers.LonLat(data[i].x, data[i].y);
-                var icon = new OpenLayers.Icon('img/red.png',size,offset);
+                var icon = new OpenLayers.Icon('extend/style/red.png',size,offset);
                 var feature = new OpenLayers.Feature(markerLyr,
                         pt,
                         {'icon': icon,'attr':data[i]});
@@ -77,7 +74,7 @@
                 marker.events.register("mouseover", feature, function(e){
                     map.layerContainerDiv.style.cursor = "pointer";
                     var id= e.object.id;
-                    $("#img"+id).attr("src","img/blue.png");
+                    $("#img"+id).attr("src","extend/style/blue.png");
                     $("#li"+id).css("background","#f2f2f2");
                     var data = e.object.attr;
                     markerLyr.highMarkerById(data.id);
@@ -85,7 +82,7 @@
                 marker.events.register("mouseout", feature, function(e){
                     map.layerContainerDiv.style.cursor = "default";
                     var id= e.object.id;
-                    $("#img"+id).attr("src","img/red.png");
+                    $("#img"+id).attr("src","extend/style/red.png");
                     $("#li"+id).css("background","#ffffff");
                     markerLyr.highMarkerById("");
                 });
@@ -95,7 +92,7 @@
                  */
                 var li = $("<li />").attr("id","li"+i).appendTo(ul);
                 var title = $("<div />").addClass("item").attr("i",i).data("attr",data[i]);
-                var img = $("<img />").attr("id","img"+i).attr("src", "img/red.png")/*.attr("width", "16").attr("height", "18")*/;
+                var img = $("<img />").attr("id","img"+i).attr("src", "extend/style/red.png")/*.attr("width", "16").attr("height", "18")*/;
                 var num = $("<a />").addClass("item-num").html(i+1);
                 var name = $("<div />").addClass("item-title").html(data[i].name);
                 title.append(img).append(num).append(name);
@@ -104,14 +101,14 @@
                 li.append(title).append(content).append(detail);
                 title.on("mouseover",function(){
                     var i = $(this).attr("i");
-                    $("#img"+i).attr("src","img/blue.png");
+                    $("#img"+i).attr("src","extend/style/blue.png");
                     var data = $(this).data("attr");
                     markerLyr.highMarkerById(data.id);
                      $("#li"+i).css("background","#f2f2f2");
                 });
                 title.on("mouseout",function(){
                     var i = $(this).attr("i");
-                    $("#img"+i).attr("src","img/red.png");
+                    $("#img"+i).attr("src","extend/style/red.png");
                     $("#li"+i).css("background","#fff");
                     markerLyr.highMarkerById("");
                 });
@@ -129,6 +126,7 @@
             });
 
             function getRandomXY(){
+                var bounds = map.getExtent();
                 var json = new Array();
                 for(var i=0;i<8;i++){
                     var w = bounds.getWidth();
@@ -138,7 +136,7 @@
                     json.push({
                         id:i,
                         name:"name"+i,
-                        desc:"this is the name"+i,
+                        desc:"this is the name"+(i+1),
                         x:x,
                         y:y
                     })

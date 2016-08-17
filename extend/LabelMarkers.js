@@ -90,7 +90,7 @@ OpenLayers.Layer.LabelMarkers = OpenLayers.Class(OpenLayers.Layer, {
             var iconDiv = marker.icon.imageDiv;
             var iconImg = $(iconDiv).find("img")[0];
             if(marker.attr.id===id){
-                $(iconImg).attr("src","img/blue.png");
+                $(iconImg).attr("src","extend/style/blue.png");
                 var lonlat = new OpenLayers.LonLat(attr.x, attr.y);
                 var scrPt = scope.map.getLayerPxFromLonLat(lonlat);
                 var labelDiv = $("<div/>").addClass("highlight-label").css("top",(scrPt.y+20)+"px")
@@ -98,7 +98,7 @@ OpenLayers.Layer.LabelMarkers = OpenLayers.Class(OpenLayers.Layer, {
                 $(scope.div).append(labelDiv)
             }
             else{
-                $(iconImg).attr("src","img/red.png");
+                $(iconImg).attr("src","extend/style/red.png");
             }
         }
         this.redraw();
