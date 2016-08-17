@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>openlayers map</title>
+    <link rel="stylesheet" type="text/css" href="http://dev.openlayers.org/theme/default/style.css"/>
+    <link rel="stylesheet" type="text/css" href="extend/style/poi.css" />
+    <style type="text/css">
+        html, body, #map{
+            padding:0;
+            margin:0;
+            height:100%;
+            width:100%;
+        }
+    </style>
+    <script type="text/javascript" src="http://dev.openlayers.org/OpenLayers.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.js"></script>
+    <script src="extend/LabelMarkers.js"></script>
+    <script src="extend/TiandituLayer-src.js"></script>
+    <script>
+        var map;
+        var tiled;
+        $(window).load(function() {
+            var bounds = new OpenLayers.Bounds(
+                    87.57582859314434, 19.969920291221204,
+                    126.56713756740385, 45.693810203800794
+            );
+            var options = {
+                controls: [],
+                maxExtent: bounds,
+                maxResolution: 0.1523098006807012,
+                projection: "EPSG:4326",
+                units: 'degrees'
+            };
+            map = new OpenLayers.Map('map', options);
+            map.addControl(new OpenLayers.Control.Zoom());
+            map.addControl(new OpenLayers.Control.Navigation());
+            map.addControl( new OpenLayers.Control.MousePosition());
+            var tiled = new OpenLayers.Layer.WMS(
+                    "province", "http://localhost:8088/geoserver/lzugis/wms",
+                    {
+                        "LAYERS": 'province',
+                        "STYLES": '',
+                        format: 'image/png'
+                    },
+                    {
+                        buffer: 0,
+                        displayOutsideMaxExtent: true,
+                        isBaseLayer: true,
+                        yx : {'EPSG:4326' : true}
+                    }
+            );
+            var markerLyr = new OpenLayers.Layer.LabelMarkers("marker");
+            map.addLayers([tiled,markerLyr]);
+            map.zoomToExtent(bounds);
+
+            var data = getRandomXY();
+            var ul = $("#items");
+            var size = new OpenLayers.Size(24,26);
+            var offset = new OpenLayers.Pixel(0, 0);
+            for(var i=0;i<data.length;i++) {
+                /**
+                 * 地图内容
+                 */
+                var pt =  new OpenLayers.LonLat(data[i].x, data[i].y);
+                var icon = new OpenLayers.Icon('img/red.png',size,offset);
+                var feature = new OpenLayers.Feature(markerLyr,
+                        pt,
+                        {'icon': icon,'attr':data[i]});
+                var marker = feature.createMarker();
+                marker.attr = data[i];
+                marker.id = i;
+                marker.events.register("click", feature, function(e){
+                    var data = e.object.attr;
+                    showInfowindow(data.name,data.desc);
+                });
+                marker.events.register("mouseover", feature, function(e){
+                    map.layerContainerDiv.style.cursor = "pointer";
+                    var id= e.object.id;
+                    $("#img"+id).attr("src","img/blue.png");
+                    $("#li"+id).css("background","#f2f2f2");
+                    var data = e.object.attr;
+                    markerLyr.highMarkerById(data.id);
+                });
+                marker.events.register("mouseout", feature, function(e){
+                    map.layerContainerDiv.style.cursor = "default";
+                    var id= e.object.id;
+                    $("#img"+id).attr("src","img/red.png");
+                    $("#li"+id).css("background","#ffffff");
+                    markerLyr.highMarkerById("");
+                });
+                markerLyr.addMarker(marker);
+                /**
+                 * 列表内容
+                 */
+                var li = $("<li />").attr("id","li"+i).appendTo(ul);
+                var title = $("<div />").addClass("item").attr("i",i).data("attr",data[i]);
+                var img = $("<img />").attr("id","img"+i).attr("src", "img/red.png")/*.attr("width", "16").attr("height", "18")*/;
+                var num = $("<a />").addClass("item-num").html(i+1);
+                var name = $("<div />").addClass("item-title").html(data[i].name);
+                title.append(img).append(num).append(name);
+                var content = $("<a />").addClass("item-content").html(data[i].desc);
+                var detail = $("<a />").addClass("item-detail").html("详细>>");
+                li.append(title).append(content).append(detail);
+                title.on("mouseover",function(){
+                    var i = $(this).attr("i");
+                    $("#img"+i).attr("src","img/blue.png");
+                    var data = $(this).data("attr");
+                    markerLyr.highMarkerById(data.id);
+                     $("#li"+i).css("background","#f2f2f2");
+                });
+                title.on("mouseout",function(){
+                    var i = $(this).attr("i");
+                    $("#img"+i).attr("src","img/red.png");
+                    $("#li"+i).css("background","#fff");
+                    markerLyr.highMarkerById("");
+                });
+                title.on("click",function(){
+                    var data = $(this).data("attr");
+                    showInfowindow(data.name,data.desc);
+                });
+            }
+
+            $(".item-list").draggable({
+                handle:'.list-title'
+            });
+            $("#close").on("click",function(){
+                $(".item-list").hide();
+            });
+
+            function getRandomXY(){
+                var json = new Array();
+                for(var i=0;i<8;i++){
+                    var w = bounds.getWidth();
+                    var h = bounds.getHeight();
+                    var x = Math.random() * w + bounds.left;
+                    var y = Math.random() * h + bounds.bottom;
+                    json.push({
+                        id:i,
+                        name:"name"+i,
+                        desc:"this is the name"+i,
+                        x:x,
+                        y:y
+                    })
+                }
+                return json;
+            }
+        });
+    </script>
+</head>
+<body>
+<div id="map"></div>
+    <div class="item-list">
+        <div id="close" class="list-close"></div>
+        <div class="list-title">结果列表</div>
+        <ul id="items">
+        </ul>
+    </div>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>OpenLayers MapQuest Demo</title>
+    <link rel="stylesheet" type="text/css" href="http://dev.openlayers.org/theme/default/style.css"/>
+    <style type="text/css">
+        html, body, #map{
+            padding:0;
+            margin:0;
+            height:100%;
+            width:100%;
+        }
+    </style>
+    <script type="text/javascript" src="http://dev.openlayers.org/OpenLayers.js"></script>
+	<script type="text/javascript" src="extend/heatmap.js"></script>
+	<script type="text/javascript" src="extend/heatmap-openlayers.js"></script>
+	<script type="text/javascript" src="extend/data.js"></script>
+    <script type="text/javascript">
+        var map;
+		var heatmap;
+        function init(){
+            function getBaseLayer(layername, layer){
+                return new OpenLayers.Layer.XYZ(
+                        layername,
+                        [
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}"
+
+                        ],
+                        {
+                            isBaseLayer: true,
+                            displayInLayerSwitcher:true
+                        }
+                );
+            };
+            function getAnnoLayer(layername, layer, visiable){
+                return new OpenLayers.Layer.XYZ(
+                        layername,
+                        [
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+                            "http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}"
+
+                        ],
+                        {
+                            isBaseLayer: false,
+                            visibility:visiable,
+                            displayInLayerSwitcher:false
+                        }
+                );
+            };
+
+            var baseLayers = ["vec_c","img_c","ter_c"];
+            var vecLayer = getBaseLayer("vec",baseLayers[0]);
+            var vecAnno = getAnnoLayer("cva", "cva_c", true);
+			
+			var transformedTestData = { max: testData.max , data: [] },
+					data = testData.data,
+					datalen = data.length,
+					nudata = [];
+			while(datalen--){
+				nudata.push({
+					lonlat: new OpenLayers.LonLat(data[datalen].lon, data[datalen].lat),
+					count: data[datalen].count
+				});
+			}
+			transformedTestData.data = nudata;
+
+            map = new OpenLayers.Map({
+                div: "map",
+                projection: "EPSG:4326",
+                layers: [vecLayer],
+                numZoomLevels:20,
+                center: [103.847, 36.0473],
+                zoom: 4
+            });
+            map.addControl(new OpenLayers.Control.LayerSwitcher());
+            map.addControl(new OpenLayers.Control.MousePosition());
+			
+			heatmap = new OpenLayers.Layer.Heatmap( "Heatmap Layer",
+					map, vecLayer,
+					{
+						visible: true,
+						radius:10
+					},
+					{
+						isBaseLayer: false,
+						opacity: 0.3,
+						projection: new OpenLayers.Projection("EPSG:4326")
+					}
+			);
+            map.addLayers([vecAnno, heatmap]);
+			heatmap.setDataSet(transformedTestData);
+        }
+    </script>
+</head>
+<body onload="init()">
+    <div id="map"></div>
+</body>
