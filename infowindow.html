@@ -5,6 +5,7 @@
     <title>openlayers map</title>
     <link rel="stylesheet" type="text/css" href="http://dev.openlayers.org/theme/default/style.css"/>
     <link rel="stylesheet" type="text/css" href="extend/style/poi.css" />
+    <link rel="stylesheet" type="text/css" href="extend/style/infowindow.css" />
     <style type="text/css">
         html, body, #map{
             padding:0;
@@ -17,6 +18,7 @@
     <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.js"></script>
     <script src="extend/LabelMarkers.js"></script>
     <script src="extend/TiandituLayer-src.js"></script>
+    <script src="extend/InfoWindow.js"></script>
     <script>
         var map;
         var tiled;
@@ -125,10 +127,16 @@
             function showInfowindow(data){
                 console.log(data);
                 var lonlat = new OpenLayers.LonLat(data.x, data.y);
-                var size=new OpenLayers.Size(110,155);
-                var content = data.desc;
-                var popup = new OpenLayers.Popup('12', lonlat, size, content, null, false, null);
+                var content = $("<div/>").html(data.desc);
+                var popup = new OpenLayers.InfoWindow(lonlat, {
+                    width: 333,
+                    height:250,
+                    title: data.name,
+                    content: content,
+                    type:"marker"
+                });
                 map.addPopup(popup,true);
+                map.setCenter(lonlat);
             }
 
             function getRandomXY(){

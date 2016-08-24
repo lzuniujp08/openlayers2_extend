@@ -1,0 +1,5 @@
+.boxtop{ background:url(box-top.png); width:333px; height:45px;font-family: Î¢ÈíÑÅºÚ;}
+.boxtop p{ color:#fff; line-height:50px; margin-left:20px; font-size:17px; font-weight: bold;}
+.boxtop p div{ background:url(layesclose.png);width:13px;height:9px;float:right; margin-right:20px; margin-top:22px;cursor:pointer;}
+.boxcenter{ background:url(box-center.png); width:333px;padding: 5px 15px;}
+.boxbottom{ background:url(box-bottom.png); width:333px; height:34px;}
