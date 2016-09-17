@@ -1,0 +1,393 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>china EPSG:4326 image/png</title>
+    <link rel="stylesheet" type="text/css" href="http://dev.openlayers.org/theme/default/style.css"/>
+    <style type="text/css">
+        body { font-family: 微软雅黑; font-weight: bold; font-size: .8em; }
+        body { border: 0px; margin: 0px; padding: 0px; }
+        #map { width: 100%; height: 100%; border: 0px; padding: 0px; }
+        .query-box{
+            position: absolute;
+            top: 15pt;
+            right: 15pt;
+            z-index:1001;
+            border: 1px solid #ff0000;
+            border-radius: 3px;
+            background: #f2f2f2;
+            padding: 5px 8px;
+            font-family: "Trebuchet MS", Helvetica, Arial, sans-serif;
+            width:300px;
+            max-height: 600px;
+        }        
+        .title{
+        	background: #00008B;
+        	color: #fff;
+        	padding: 3px 5px;
+        }
+    </style>
+    <script type="text/javascript" src="http://dev.openlayers.org/OpenLayers.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.js"></script>
+    <script src="extend/TiandituLayer-src.js"></script>
+    <!--标绘引用开始-->
+	<script src="plot/geometry/GeoPlotting.js"></script>
+	<script src="plot/geometry/GeoLinePlotting.js"></script>
+	<script src="plot/geometry/GeoMultiLinePlotting.js"></script>
+	<script src="plot/Handler/Plotting.js"></script>
+	<script src="plot/Control/PlottingEdit.js"></script>
+    <script src="plot/Extend.js"></script>
+	<!--面-->
+	<script src="plot/geometry/polygon/GeoPolygonEx.js"></script>
+	<script src="plot/Handler/polygon/PolygonEx.js"></script>
+	
+	<script src="plot/geometry/polygon/GeoCircle.js"></script>
+	<script src="plot/Handler/polygon/CircleEx.js"></script>
+	
+	<script src="plot/geometry/polygon/GeoEllipse.js"></script>
+	<script src="plot/Handler/polygon/EllipseEx.js"></script>
+	
+	<script src="plot/geometry/polygon/GeoFreePolygon.js"></script>
+	<script src="plot/Handler/polygon/FreePolygon.js"></script>
+	
+	<script src="plot/geometry/polygon/GeoCloseCurve.js"></script>
+	<script src="plot/Handler/polygon/CloseCurve.js"></script>
+	
+	<script src="plot/geometry/polygon/GeoGatheringPlace.js"></script>
+	<script src="plot/Handler/polygon/GatheringPlace.js"></script>
+	
+	<script src="plot/geometry/polygon/GeoRectangle.js"></script>
+	<script src="plot/Handler/polygon/Rectangle.js"></script>
+	
+	<script src="plot/geometry/polygon/GeoRoundedRect.js"></script>
+	<script src="plot/Handler/polygon/RoundedRect.js"></script>
+	
+	<script src="plot/geometry/polygon/GeoSector.js"></script>
+	<script src="plot/Handler/polygon/Sector.js"></script>
+	
+	<script src="plot/geometry/polygon/GeoLune.js"></script>
+	<script src="plot/Handler/polygon/Lune.js"></script>
+	<!--线-->
+	<script src="plot/geometry/line/GeoArc.js"></script>
+	<script src="plot/Handler/line/ArcEx.js"></script>
+	
+	<script src="plot/geometry/line/GeoBezierCurve2.js"></script>
+	<script src="plot/Handler/line/BezierCurve2Ex.js"></script>
+	
+	<script src="plot/geometry/line/GeoBezierCurve3.js"></script>
+	<script src="plot/Handler/line/BezierCurve3Ex.js"></script>
+	
+	<script src="plot/geometry/line/GeoBezierCurveN.js"></script>
+	<script src="plot/Handler/line/BezierCurveNEx.js"></script>
+	
+	<script src="plot/geometry/line/GeoCardinalCurve.js"></script>
+	<script src="plot/Handler/line/CardinalCurveEx.js"></script>
+	
+	<script src="plot/geometry/line/GeoFreeline.js"></script>
+	<script src="plot/Handler/line/FreelineEx.js"></script>
+	
+	<script src="plot/geometry/line/GeoPolyline.js"></script>
+	<script src="plot/Handler/line/PolyLineEx.js"></script>
+	
+	<!--点-->
+	<script src="plot/geometry/point/GeoPoint.js"></script>
+	<script src="plot/Handler/point/PointEx.js"></script>
+	
+	<script src="plot/geometry/point/GeoMultiPoint.js"></script>
+	<script src="plot/Handler/point/MultiPointEx.js"></script>
+	<!--箭头-->
+	<script src="plot/geometry/arrow/GeoBezierCurveArrow.js"></script>
+	<script src="plot/Handler/arrow/BizerCurveArrow.js"></script>
+	
+	<script src="plot/geometry/arrow/GeoCardinalCurveArrow.js"></script>
+	<script src="plot/Handler/arrow/CardinalCurveArrow.js"></script>
+	
+	<script src="plot/geometry/arrow/GeoCurveFlag.js"></script>
+	<script src="plot/Handler/arrow/CurveFlag.js"></script>
+	
+	<script src="plot/geometry/arrow/GeoDiagonalArrow.js"></script>
+	<script src="plot/Handler/arrow/DiagonalArrow.js"></script>
+	
+	<script src="plot/geometry/arrow/GeoDoubleArrow.js"></script>
+	<script src="plot/Handler/arrow/DoubleArrow.js"></script>
+	
+	<script src="plot/geometry/arrow/GeoDoveTailDiagonalArrow.js"></script>
+	<script src="plot/Handler/arrow/DoveTailDiagonalArrow.js"></script>
+	
+	<script src="plot/geometry/arrow/GeoDoveTailStraightArrow.js"></script>
+	<script src="plot/Handler/arrow/DoveTailStraightArrow.js"></script>
+	
+	<script src="plot/geometry/arrow/GeoParallelSearch.js"></script>
+	<script src="plot/Handler/arrow/ParallelSearch.js"></script>
+	
+	<script src="plot/geometry/arrow/GeoPolylineArrow.js"></script>
+	<script src="plot/Handler/arrow/PolylineArrow.js"></script>
+	
+	<script src="plot/geometry/arrow/GeoRectFlag.js"></script>
+	<script src="plot/Handler/arrow/RectFlag.js"></script>
+	
+	<script src="plot/geometry/arrow/GeoSectorSearch.js"></script>
+	<script src="plot/Handler/arrow/SectorSearch.js"></script>
+	
+	<script src="plot/geometry/arrow/GeoStraightArrow.js"></script>
+	<script src="plot/Handler/arrow/StraightArrow.js"></script>
+	
+	<script src="plot/geometry/arrow/GeoTriangleFlag.js"></script>
+	<script src="plot/Handler/arrow/TriangleFlag.js"></script>
+	<!--标绘引用结束-->
+    <script type="text/javascript">
+        var map, vectors, draws;
+        var drawFeature;
+        function init(){
+            vectors = new OpenLayers.Layer.Vector("标绘图层"); 
+       		//设置图层样式
+            vectors.style = {
+            	pointRadius: 5,
+                fillColor: "#66cccc",
+                fillOpacity: 0.4,
+                strokeColor: "#ff0000",
+                strokeOpacity: 1,
+                strokeWidth: 2
+            };
+            vectors.events.on({
+                "afterfeaturemodified":function(evt){
+                	if(evt.modified){
+                		console.log(evt);
+                	}
+                	else{
+                		console.log("no changes");	
+                	}
+                	deactive();
+                }
+            });
+            var vec_c = new OpenLayers.Layer.TiandituLayer("vec_c", "http://t0.tianditu.com/DataServer",{
+                mapType:"vec_c",
+                topLevel: 0,
+                bottomLevel: 18,
+                isBaseLayer:true,
+                isOnline:true,
+                mirrorUrls:[
+                    "http://t1.tianditu.com/DataServer",
+                    "http://t2.tianditu.com/DataServer",
+                    "http://t3.tianditu.com/DataServer",
+                    "http://t4.tianditu.com/DataServer",
+                    "http://t5.tianditu.com/DataServer",
+                    "http://t6.tianditu.com/DataServer",
+                    "http://t7.tianditu.com/DataServer"
+                ]
+            });
+            map = new OpenLayers.Map({
+                div: "map",
+                projection: "EPSG:4326",
+                center: [103.847, 36.0473],
+                zoom: 4,
+                layers:[vec_c,vectors]
+            });
+            map.addControl(new OpenLayers.Control.Zoom());
+            map.addControl(new OpenLayers.Control.Navigation());
+            /**
+             * 绘制
+             */
+            draws = {
+            	"Point":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.PointEx
+	            ),    
+	            "MultiPoint":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.MultiPointEx
+	            ),
+	            "Arc":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.ArcEx
+	            ),
+	            "BezierCurve2":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.BezierCurve2Ex
+	            ),
+	            "BezierCurve3":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.BezierCurve3Ex
+	            ),
+	            "BezierCurveN":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.BezierCurveNEx
+	            ),
+	            "CardinalCurve":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.CardinalCurveEx
+	            ),
+	            "Freeline":new OpenLayers.Control.DrawFeature(vectors,
+	            	OpenLayers.Handler.FreelineEx
+	            ),
+	            "PolyLine":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.PolyLineEx
+	            ),
+	            "Polygon":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.PolygonEx
+	            ),
+            	"Circle":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.CircleEx
+	            ),
+	            "Ellipse":new OpenLayers.Control.DrawFeature(vectors,
+	            	OpenLayers.Handler.EllipseEx
+	            ),
+	            "FreePolygon":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.FreePolygon
+	            ),
+	            "CloseCurve":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.CloseCurve
+	            ),
+	            "GatheringPlace":new OpenLayers.Control.DrawFeature(vectors,
+	            	OpenLayers.Handler.GatheringPlace
+	            ),
+	            "Rectangle":new OpenLayers.Control.DrawFeature(vectors,
+	            	OpenLayers.Handler.Rectangle
+	            ),
+	            "RoundedRect":new OpenLayers.Control.DrawFeature(vectors,
+	            	OpenLayers.Handler.RoundedRect
+	            ),
+	            "Sector":new OpenLayers.Control.DrawFeature(vectors,
+	            	OpenLayers.Handler.Sector
+	            ),
+	            "Lune":new OpenLayers.Control.DrawFeature(vectors,
+	            	OpenLayers.Handler.Lune
+	            ),
+	            "BizerCurveArrow":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.BezierCurveArrow
+	            ),
+	            "CardinalCurveArrow":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.CardinalCurveArrow
+	            ),
+	            "CurveFlag":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.CurveFlag
+	            ),
+	            "DiagonalArrow":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.DiagonalArrow
+	            ),
+	            "DoubleArrow":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.DoubleArrow
+	            ),
+	            "DoveTailDiagonalArrow":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.DoveTailDiagonalArrow
+	            ),
+	            "DoveTailStraightArrow":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.DoveTailStraightArrow
+	            ),
+	            "ParallelSearch":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.ParallelSearch
+	            ),
+	            "PolylineArrow":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.PolylineArrow
+	            ),
+	            "RectFlag":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.RectFlag
+	            ),
+	            "SectorSearch":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.SectorSearch
+	            ),
+	            "StraightArrow":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.StraightArrow
+	            ),
+	            "TriangleFlag":new OpenLayers.Control.DrawFeature(vectors, 
+	            	OpenLayers.Handler.TriangleFlag
+	            )
+            }
+            for(var item in draws){
+            	var draw = draws[item];
+            	draw.events.register("featureadded",vectors,function(){
+					deactive();
+	            });
+	            map.addControl(draw);
+            }            
+            /**
+             * 编辑
+             */
+            var editusual = new OpenLayers.Control.ModifyFeature(vectors);
+            var editextend = new OpenLayers.Control.PlottingEdit(vectors);
+	        //修改控制点样式
+	        editextend.controlPointsStyle = {
+	            fillColor: "blue",
+	            fillOpacity: 0.2,
+	            strokeColor: "blue"
+	        };
+	        map.addControls([editusual, editextend]);
+	        
+	        drawFeature = function(type){
+            	var draw = draws[type];
+            	draw.activate();
+            	map.layerContainerDiv.style.cursor = "crosshair";
+	        }
+	        
+            $("#editusual").on("click",function(){
+            	editusual.activate();
+            	map.layerContainerDiv.style.cursor = "crosshair";
+            });
+            $("#editextend").on("click",function(){
+            	editextend.activate();
+            	map.layerContainerDiv.style.cursor = "move";
+            });
+            $("#clear").on("click",function(){
+            	clear();
+            });
+            
+            function deactive(){
+            	for(var item in draws){
+            		var draw = draws[item];
+	            	draw.deactivate();
+	            }  
+            	if(editusual)editusual.deactivate();
+            	if(editextend)editextend.deactivate();
+            	map.layerContainerDiv.style.cursor = "default";
+            }
+            
+            function clear(){
+            	vectors.removeAllFeatures();
+            	deactive();
+            }
+        }
+    </script>
+</head>
+<body onLoad="init()">
+<div id="map">
+	<div class="query-box">
+		<div class="title">Start Draw</div>
+		<div>Point</div>
+		<button onclick="drawFeature('MultiPoint')">MultiPoint</button>
+		<button onclick="drawFeature('Point')">Point</button>
+		
+		<div>Line<div>
+		<button onclick="drawFeature('Arc')">Arc</button>
+		<button onclick="drawFeature('BezierCurve2')">BezierCurve2</button>
+		<button onclick="drawFeature('BezierCurve3')">BezierCurve3</button>
+		<button onclick="drawFeature('BezierCurveN')">BezierCurveN</button>
+		<button onclick="drawFeature('CardinalCurve')">CardinalCurve</button>
+		<button onclick="drawFeature('Freeline')">Freeline</button>		
+		<button onclick="drawFeature('PolyLine')">PolyLine</button>
+		
+		<div>Polygon</div>
+		<button onclick="drawFeature('CloseCurve')">CloseCurve</button>
+		<button onclick="drawFeature('Circle')">Circle</button>
+		<button onclick="drawFeature('Ellipse')">Ellipse</button>
+		<button onclick="drawFeature('FreePolygon')">FreePolygon</button>
+		<button onclick="drawFeature('GatheringPlace')">GatheringPlace</button>
+		<button onclick="drawFeature('Lune')">Lune</button>
+		<button onclick="drawFeature('Polygon')">Polygon</button>
+		<button onclick="drawFeature('Rectangle')">Rectangle</button>
+		<button onclick="drawFeature('RoundedRect')">RoundedRect</button>
+		<button onclick="drawFeature('Sector')">Sector</button>
+		
+		<div>Arrow and Flag</div>
+		<button onclick="drawFeature('BizerCurveArrow')">BizerCurveArrow</button>
+		<button onclick="drawFeature('CardinalCurveArrow')">CardinalCurveArrow</button>
+		<button onclick="drawFeature('CurveFlag')">CurveFlag</button>
+		<button onclick="drawFeature('DiagonalArrow')">DiagonalArrow</button>
+		<button onclick="drawFeature('DoubleArrow')">DoubleArrow</button>
+		<button onclick="drawFeature('DoveTailDiagonalArrow')">DoveTailDiagonalArrow</button>
+		<button onclick="drawFeature('DoveTailStraightArrow')">DoveTailStraightArrow</button>
+		<button onclick="drawFeature('ParallelSearch')">ParallelSearch</button>
+		<button onclick="drawFeature('PolylineArrow')">PolylineArrow</button>
+		<button onclick="drawFeature('RectFlag')">RectFlag</button>
+		<button onclick="drawFeature('SectorSearch')">SectorSearch</button>
+		<button onclick="drawFeature('StraightArrow')">StraightArrow</button>
+		<button onclick="drawFeature('TriangleFlag')">TriangleFlag</button>
+		
+		<div class="title">Edit Draw</div>
+		<button id="editextend">edit</button>
+		<button id="clear">clear</button>
+	</div>
+</div>
+</body>
+</html>
