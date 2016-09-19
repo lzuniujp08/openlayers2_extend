@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>openlayers map</title>
+    <link rel="stylesheet" type="text/css" href="http://dev.openlayers.org/theme/default/style.css"/>
+    <style>
+        html, body, #map{
+            padding:0;
+            margin:0;
+            height:100%;
+            width:100%;
+            overflow: hidden;
+        }
+        .tool{
+            position: absolute;
+            top:10pt;
+            right: 10pt;
+            padding: 5px;
+            background: #fff;
+            border: 1px solid #ff5500;
+            z-index: 1000;
+        }
+    </style>
+    <script type="text/javascript" src="http://dev.openlayers.org/OpenLayers.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.js"></script>
+    <script src="extend/TiandituLayer-src.js"></script>
+    <script src="http://echarts.baidu.com/echarts2/doc/example/www/js/echarts.js"></script>
+	<script src="extend/EchartChartLayer.js"></script>
+    <script>
+        require.config({
+	        paths: {
+				echarts: 'http://echarts.baidu.com/echarts2/doc/example/www/js'
+	        }
+	    });
+	    function getBaseLayer(layername, layer){
+			return new OpenLayers.Layer.XYZ(
+					layername,
+					[
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}"
+
+					],
+					{
+						isBaseLayer: true,
+						displayInLayerSwitcher:true
+					}
+			);
+		};
+		function getAnnoLayer(layername, layer, visiable){
+			return new OpenLayers.Layer.XYZ(
+					layername,
+					[
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}"
+
+					],
+					{
+						isBaseLayer: false,
+						visibility:visiable,
+						displayInLayerSwitcher:false
+					}
+			);
+		};
+        var data = [{name:"乌鲁木齐",x:87.5758285931,y:43.7822116460,data:[
+            {
+                name: '男',
+                value: 40.0
+            },{
+                name: '女',
+                value: 60.0
+            }
+        ]},
+            {name:"拉萨",x:91.1629975040,y:29.7104204643,data:[
+                {
+                    name: '男',
+                    value: 45.0
+                },{
+                    name: '女',
+                    value: 55.0
+                }
+            ]},
+            {name:"北京",x:116.4575803581078,y:40.04054437977018,data:[
+                {
+                    name: '男',
+                    value: 35.0
+                },{
+                    name: '女',
+                    value: 65.0
+                }
+            ]},
+            {name:"兰州",x:103.584297498,y:36.1190864503,data:[
+                {
+                    name: '男',
+                    value: 44.0
+                },{
+                    name: '女',
+                    value: 56.0
+                }
+            ]}];
+        var map;
+        var tiled;
+        OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
+        OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
+        $(window).load(function() {
+        	var vecLayer = getBaseLayer("vec","vec_c");
+			var vecAnno = getAnnoLayer("cva", "cva_c", true);
+			map = new OpenLayers.Map({
+				div: "map",
+				projection: "EPSG:4326",
+				layers: [vecLayer,vecAnno],
+				numZoomLevels:20,
+				center: [103.847, 36.0473],
+				zoom: 4
+			});
+            map.addControl(new OpenLayers.Control.Zoom());
+            map.addControl(new OpenLayers.Control.Navigation());
+
+            $("#addchart").on("click",function(){
+                addMapChart();
+                map.events.register("zoomend", map, function(){
+                    addMapChart();
+                });
+            });
+        });
+
+        function addMapChart(){
+            $(".olPopup").remove();
+            var zoom = map.getZoom();
+            for(var i=0;i<data.length;i++){
+                var d = data[i];
+                var size=30+(zoom-1)*10;
+                var domid = "chart"+i;
+                var content = "<div class='mapChart' id='"+domid+"' ></div>";
+                var popup = new OpenLayers.Popup(domid,
+                        new OpenLayers.LonLat(d.x,d.y),
+                        new OpenLayers.Size(size,size),
+                        content,
+                        false);
+                popup.setBackgroundColor("transparent");
+                popup.setBorder("0px #0066ff solid");
+                popup.keepInMap = false;
+                map.addPopup(popup,false);
+                addChart(domid,d);
+            }
+            var pops = $(map.div).find(".olPopup");
+            for(var i=0;i<pops.length;i++){
+                var pop = $(pops[i]);
+                var top = pop.position().top,
+                        left = pop.position().left;
+                pop.css("top",(top-size/2)+"px").css("left",(left-size/2)+"px");
+            }
+        }
+        function addChart(domid,data){
+            require(
+            [
+                'echarts',
+                'echarts/chart/pie'
+            ],
+                function (ec) {
+                    // 基于准备好的dom，初始化echarts图表
+                    var myChart = ec.init(document.getElementById(domid));
+                    var option = {
+                        // renderAsImage:true,
+                        animation:true,
+                        tooltip : {
+                            trigger: 'item',
+                            formatter: "{b}:{c}"
+                        },
+                        series : [
+                            {
+                                type:'pie',
+                                radius : '100%',
+                                center: ['50%', '50%'],
+                                itemStyle:{
+                                    normal: {
+                                        labelLine:{show: false}
+                                    },                        
+                                },
+                                data:data.data,
+                                line:false
+                            }
+                        ]
+                    };
+                    // 为echarts对象加载数据
+                    myChart.setOption(option);
+                }
+            );
+        }
+    </script>
+</head>
+<body>
+<div id="map">
+    <div class="tool">
+        <button id="addchart">添加统计图</button>
+    </div>
+</div>
+</body>
+</html>
