@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>openlayers map</title>
+    <link rel="stylesheet" type="text/css" href="http://dev.openlayers.org/theme/default/style.css"/>
+    <style>
+        html, body, #map{
+            padding:0;
+            margin:0;
+            height:100%;
+            width:100%;
+            overflow: hidden;
+        }
+    </style>
+    <script type="text/javascript" src="http://dev.openlayers.org/OpenLayers.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.js"></script>
+    <script src="extend/TiandituLayer-src.js"></script>
+    <script src="extend/AgsTileLayer.js"></script>
+    <script>
+        var map;
+        $(window).load(function() {
+            var bounds = new OpenLayers.Bounds(
+                5606198.678169,2468400.899334,18364455.943301,6274353.411709
+            );
+            map = new OpenLayers.Map('map');
+            map.addControl(new OpenLayers.Control.Zoom());
+            map.addControl(new OpenLayers.Control.Navigation());
+            var tiled = new OpenLayers.Layer.AgsTileLayer( "AGSCache",
+                    "http://server.arcgisonline.com/arcgis/rest/services/World_Topo_Map/MapServer", {
+                        isBaseLayer: true,
+                        tileSize: new OpenLayers.Size(256, 256),
+                        resolutions: [
+                            156543.03392800014,
+							78271.51696400007,
+							39135.758482000034,
+							19567.879241000017,
+							9783.939620500008,
+							4891.969810250004,
+							2445.984905125002,
+							1222.992452562501,
+							611.4962262812505,
+							305.74811314062526,
+							152.87405657031263,
+							76.43702828515632,
+							38.21851414257816,
+							19.10925707128908,
+							9.55462853564454,
+							4.77731426782227,
+							2.388657133911135,
+							1.1943285669555674,
+							0.5971642834777837,
+							0.29858214173889186,
+							0.14929107082380833,
+							0.07464553541190416,
+							0.03732276770595208,
+							0.01866138385297604
+                        ],
+                        tileOrigin: new OpenLayers.LonLat(-2.0037508342787E7 , 2.0037508342787E7 ),
+                        maxExtent: new OpenLayers.Bounds(-2.0037507067161843E7,-1.9971868880408604E7,2.0037507067161843E7,1.997186888040863E7),
+                        projection: 'EPSG:102100'
+                    });
+            map.addLayers([tiled]);
+            map.zoomToExtent(bounds);
+        });
+    </script>
+</head>
+<body>
+<div id="map" style="width: 100%;"></div>
+</body>
+</html>`

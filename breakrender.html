@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>openlayers map</title>
+    <link rel="stylesheet" type="text/css" href="http://dev.openlayers.org/theme/default/style.css"/>
+	<style>
+        html, body, #map{
+            padding:0;
+            margin:0;
+            height:100%;
+            width:100%;
+            overflow: hidden;
+        }
+    </style>
+    <script type="text/javascript" src="http://dev.openlayers.org/OpenLayers.js"></script>
+	<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.js"></script>
+	<script src="extend/TiandituLayer-src.js"></script>
+    <script>
+    	function getBaseLayer(layername, layer){
+			return new OpenLayers.Layer.XYZ(
+					layername,
+					[
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}"
+
+					],
+					{
+						isBaseLayer: true,
+						displayInLayerSwitcher:true
+					}
+			);
+		};
+		function getAnnoLayer(layername, layer, visiable){
+			return new OpenLayers.Layer.XYZ(
+					layername,
+					[
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}",
+						"http://t0.tianditu.com/DataServer?T="+layer+"&X=${x}&Y=${y}&L=${z}"
+
+					],
+					{
+						isBaseLayer: false,
+						visibility:visiable,
+						displayInLayerSwitcher:false
+					}
+			);
+		};
+        var map;
+        $(window).load(function() {
+            var vecLayer = getBaseLayer("vec","vec_c");
+			var vecAnno = getAnnoLayer("cva", "cva_c", true);
+            var style = new OpenLayers.Style({
+                strokeColor: "#ffffff",
+                strokeWidth: 1,
+//                label: "${vocation}",
+                labelAlign: "center",
+                labelXOffset: "0",
+                labelYOffset: "-0",
+                fontColor: "#000000",
+                fontFamily: "微软雅黑",
+                fontSize:13
+            },{
+                rules: [
+                    new OpenLayers.Rule({
+                        // a rule contains an optional filter
+                        filter: new OpenLayers.Filter.Comparison({
+                            type: OpenLayers.Filter.Comparison.LESS_THAN,
+                            property: "vocation", // the "foo" feature attribute
+                            value: 2
+                        }),
+                        // if a feature matches the above filter, use this symbolizer
+                        symbolizer: {
+                            fillColor: "#2892c7"
+                        }
+                    }),
+                    new OpenLayers.Rule({
+                        filter: new OpenLayers.Filter.Comparison({
+                            type: OpenLayers.Filter.Comparison.BETWEEN,
+                            property: "vocation",
+                            lowerBoundary: 2,
+                            upperBoundary: 6
+                        }),
+                        symbolizer: {
+                            fillColor: "#a0c29b"
+                        }
+                    }),
+                    new OpenLayers.Rule({
+                        filter: new OpenLayers.Filter.Comparison({
+                            type: OpenLayers.Filter.Comparison.BETWEEN,
+                            property: "vocation",
+                            lowerBoundary: 6,
+                            upperBoundary: 9
+                        }),
+                        symbolizer: {
+                            fillColor: "#fafa64"
+                        }
+                    }),
+                    new OpenLayers.Rule({
+                        filter: new OpenLayers.Filter.Comparison({
+                            type: OpenLayers.Filter.Comparison.BETWEEN,
+                            property: "vocation",
+                            lowerBoundary: 9,
+                            upperBoundary: 14
+                        }),
+                        symbolizer: {
+                            fillColor: "#fa8d34"
+                        }
+                    }),
+                    new OpenLayers.Rule({
+                        // apply this rule if no others apply
+                        elseFilter: true,
+                        symbolizer: {
+                            fillColor: "#e81014"
+                        }
+                    })
+                ]
+            });
+            var vector_layer = new OpenLayers.Layer.Vector("pro",{
+                styleMap: new OpenLayers.StyleMap(style)
+            });
+            map = new OpenLayers.Map({
+				div: "map",
+				projection: "EPSG:4326",
+				layers: [vecLayer, vector_layer, vecAnno],
+				numZoomLevels:20,
+				center: [103.847, 36.0473],
+				zoom: 4
+			});
+            map.addControl(new OpenLayers.Control.Zoom());
+            map.addControl(new OpenLayers.Control.Navigation());
+            $("#geojson").on("click",function(){
+                $.get("data/province.geojson",null,function(result){
+                    result = eval("("+result+")");
+                    var geojson_format = new OpenLayers.Format.GeoJSON();
+                    vector_layer.addFeatures(geojson_format.read(result));
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="map">
+    <div style="position: absolute;top: 10pt;right: 10pt;z-index: 999;background: #fff;border: 1px solid #f00;padding: 10px;">
+        <button id="geojson">add GeoJSON</button>
+    </div>
+</div>
+</body>
+</html>

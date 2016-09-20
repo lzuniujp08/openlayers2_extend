@@ -1,29 +1,29 @@
-±¾²Ö¿âÎªopenlayers2µÄÀ©Õ¹µÄÒ»¸ö×Ü½á£¬°üÀ¨£º
-1¡¢½áºÏechartÊµÏÖÍ³¼ÆÍ¼£»
-2¡¢echartÊµÏÖÈÈÁ¦Í¼£»
-3¡¢echartÓëµØÍ¼µÄ½áºÏÊµÏÖìÅ¹âÌØÐ§£»
-4¡¢¾íÁ±¹¤¾ß£»
-5¡¢µ÷ÓÃÌìµØÍ¼£»
-6¡¢POIÓëÁÐ±í»¥¶¯£»
-7¡¢ÐÅÏ¢¿ò£¬infowindow£»
-8¡¢¶¯Ì¬±ê»æÄÚÈÝ£»
+æœ¬ä»“åº“ä¸ºopenlayers2çš„æ‰©å±•çš„ä¸€ä¸ªæ€»ç»“ï¼ŒåŒ…æ‹¬ï¼š
+1ã€ç»“åˆechartå®žçŽ°ç»Ÿè®¡å›¾ï¼›
+2ã€echartå®žçŽ°çƒ­åŠ›å›¾ï¼›
+3ã€echartä¸Žåœ°å›¾çš„ç»“åˆå®žçŽ°ç‚«å…‰ç‰¹æ•ˆï¼›
+4ã€å·å¸˜å·¥å…·ï¼›
+5ã€è°ƒç”¨å¤©åœ°å›¾ï¼›
+6ã€POIä¸Žåˆ—è¡¨äº’åŠ¨ï¼›
+7ã€ä¿¡æ¯æ¡†ï¼Œinfowindowï¼›
+8ã€åŠ¨æ€æ ‡ç»˜å†…å®¹ï¼›
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++
-´«²¥GISÖªÊ¶ | ½»Á÷GIS¾­Ñé | ·ÖÏíGIS¼ÛÖµ | ×¨×¢GIS·¢Õ¹
+ä¼ æ’­GISçŸ¥è¯† | äº¤æµGISç»éªŒ | åˆ†äº«GISä»·å€¼ | ä¸“æ³¨GISå‘å±•
 ++++++++++++++++++++++++++++++++++++++++++++++++++
-¼¼Êõ²©¿Í
+æŠ€æœ¯åšå®¢
 http://blog.csdn.net/gisshixisheng
 
-ÔÚÏß½Ì³Ì
+åœ¨çº¿æ•™ç¨‹
 http://edu.csdn.net/course/detail/799
 
 Github
 https://github.com/lzugis/
 +++++++++++++++++++++++++++++++++++++++++++++++++++
-ÁªÏµ·½Ê½
+è”ç³»æ–¹å¼
 q    q:1004740957
 e-mail:niujp08@qq.com
-¹«ÖÚºÅ:lzugis15
-Q Q Èº:452117357(webgis)
+å…¬ä¼—å·:lzugis15
+Q Q ç¾¤:452117357(webgis)
        337469080(Android)
 +++++++++++++++++++++++++++++++++++++++++++++++++++
