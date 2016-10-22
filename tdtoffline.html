@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>OpenLayers MapQuest Demo</title>
+    <link rel="stylesheet" type="text/css" href="http://dev.openlayers.org/theme/default/style.css"/>
+    <style type="text/css">
+        html, body, #map{
+            padding:0;
+            margin:0;
+            height:100%;
+            width:100%;
+        }
+    </style>
+    <script type="text/javascript" src="http://dev.openlayers.org/OpenLayers.js"></script>
+    <script type="text/javascript" src="extend/TiandituLayer-src.js"></script>
+    <script type="text/javascript">
+        var map;
+        function init(){
+        	var url = "http://localhost:8081/tile/tdttile";
+            var vec_c = new OpenLayers.Layer.TiandituLayer("vec_c", url,{
+                mapType:"vec_c",
+                topLevel: 0,
+                bottomLevel: 18,
+                isBaseLayer:true,
+                isOnline:false
+            });
+            var img_c = new OpenLayers.Layer.TiandituLayer("img_c", url,{
+                mapType:"img_c",
+                topLevel: 0,
+                bottomLevel: 18,
+                isBaseLayer:true,
+                isOnline:false
+            });
+            var ter_c = new OpenLayers.Layer.TiandituLayer("ter_c", url,{
+                mapType:"ter_c",
+                topLevel: 0,
+                bottomLevel: 18,
+                isBaseLayer:true,
+                isOnline:false
+            });
+            var cva_c = new OpenLayers.Layer.TiandituLayer("cva_c", url,{
+                mapType:"cva_c",
+                topLevel: 0,
+                bottomLevel: 18,
+                isBaseLayer:false,
+                isOnline:false
+            });
+            map = new OpenLayers.Map({
+                div: "map",
+                projection: "EPSG:4326",
+                layers: [cva_c,vec_c,img_c,ter_c],
+                center: [103.847, 36.0473],
+                zoom: 4
+            });
+            map.addControl(new OpenLayers.Control.LayerSwitcher());
+            map.addControl(new OpenLayers.Control.MousePosition());
+        }
+    </script>
+</head>
+<body onload="init()">
+    <div id="map"></div>
+</body>

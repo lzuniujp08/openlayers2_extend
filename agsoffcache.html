@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>openlayers map</title>
+    <link rel="stylesheet" type="text/css" href="http://dev.openlayers.org/theme/default/style.css"/>
+    <style>
+        html, body, #map{
+            padding:0;
+            margin:0;
+            height:100%;
+            width:100%;
+            overflow: hidden;
+        }
+    </style>
+    <script type="text/javascript" src="http://dev.openlayers.org/OpenLayers.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.js"></script>
+    <script src="extend/AgsOffTileLayer.js"></script>
+    <script>
+        var map;
+        var tiled;
+        $(window).load(function() {
+            var bounds = new OpenLayers.Bounds(
+                    73.45100463562233, 18.16324718764174,
+                    134.97679764650596, 53.531943152223576
+            );
+            var options = {
+                controls: [],
+                maxExtent: bounds,
+                maxResolution: 0.2403351289487642,
+                projection: "EPSG:4326",
+                units: 'degrees'
+            };
+            map = new OpenLayers.Map('map', options);
+            map.addControl(new OpenLayers.Control.Zoom());
+            map.addControl(new OpenLayers.Control.Navigation());
+            tiled = new OpenLayers.Layer.AgsTileLayer( "chinashp",
+                    "http://localhost:8081/tile/agstile", {
+                        isBaseLayer: true,
+                        tileSize: new OpenLayers.Size(256, 256),
+                        resolutions: [
+                            0.15228550437313793,
+                            0.07614275218656896,
+                            0.03807137609328448,
+                            0.01903568804664224,
+                            0.00951784402332112,
+                            0.00475892201166056,
+                            0.00237946100583028
+                        ],
+                        tileOrigin: new OpenLayers.LonLat(-400 , 400),
+                        maxExtent: bounds,
+                        projection: 'EPSG:4326'
+                    });
+            map.addLayers([tiled]);
+            map.zoomToExtent(bounds);
+        });
+    </script>
+</head>
+<body>
+<div id="map" style="width: 100%;"></div>
+</body>
+</html>`

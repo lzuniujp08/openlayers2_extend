@@ -6,6 +6,7 @@ OpenLayers.Layer.AgsTileLayer = OpenLayers.Class(OpenLayers.Layer.XYZ, {
     useScales: false,
     overrideDPI: false,
     useArcgisServer:false,
+    cachetype:"file",//file为紧凑型，image为松散型
     initialize: function(name, url, options) { 
         OpenLayers.Layer.XYZ.prototype.initialize.apply(this, arguments);
     },
@@ -22,8 +23,8 @@ OpenLayers.Layer.AgsTileLayer = OpenLayers.Class(OpenLayers.Layer.XYZ, {
         if (OpenLayers.Util.isArray(url)) {
             url = this.selectUrl(s, url);
         }
-        url = url + '?layer=${layer}&x=${x}&y=${y}&z=${z}';
-        url = OpenLayers.String.format(url, {'layer': this.name,'x': x, 'y': y, 'z': z});
+        url = url + '?layer=${layer}&type=${type}&x=${x}&y=${y}&z=${z}';
+        url = OpenLayers.String.format(url, {'layer': this.name,'type': this.cachetype,'x': x, 'y': y, 'z': z});
         return OpenLayers.Util.urlAppend(
             url, OpenLayers.Util.getParameterString(this.params)
         );

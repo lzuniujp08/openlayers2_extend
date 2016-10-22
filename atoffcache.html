@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>openlayers map</title>
+    <link rel="stylesheet" type="text/css" href="http://dev.openlayers.org/theme/default/style.css"/>
+    <style>
+        html, body, #map{
+            padding:0;
+            margin:0;
+            height:100%;
+            width:100%;
+            overflow: hidden;
+        }
+    </style>
+    <script type="text/javascript" src="http://dev.openlayers.org/OpenLayers.js"></script>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.js"></script>
+    <script src="extend/AtOffTileLayer.js"></script>
+    <script>
+        var map;
+        function getTileLayer(layer,isbaselyr){
+			var url = "http://localhost:8081/tile/attile";
+            return new OpenLayers.Layer.AtOffTileLayer(layer, url,{
+                layerName:layer,
+                isBaseLayer:isbaselyr,
+				type:"dbfile",
+				tileOrigin:{
+					lon:-180,
+					lat:-90
+				}
+            });
+        }
+        $(window).load(function() {
+			var bounds = new OpenLayers.Bounds(63.9796331668832, 14.7451916724953, 140.181255914361, 55.4673388687475);
+            var options = {
+                controls: [new OpenLayers.Control.Zoom(),
+                	new OpenLayers.Control.Navigation()
+                ],
+                projection: "EPSG:4326",
+                units: 'dd',
+				maxExtent: bounds,
+				resolutions:[
+					1.40625,
+					0.703125,
+					0.3515625,
+					0.17578125,
+					0.087890625,
+					0.043945313,
+					0.021972656,
+					0.010986328,
+					0.005493164,
+					0.002746582,
+					0.001373291
+				]
+            };
+            map = new OpenLayers.Map('map',options);
+            var baselayer = getTileLayer("chinaimg",true);
+            map.addLayer(baselayer);
+            map.zoomToExtent(bounds);
+			map.zoomTo(map.getZoom()+1);
+        });
+    </script>
+</head>
+<body>
+<div id="map" style="width: 100%;"></div>
+</body>
+</html>`
